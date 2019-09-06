@@ -49,16 +49,6 @@ void MainWindow::sleep(unsigned int tim)        //延时函数
        }
 }
 
- void   MainWindow:: keyPressEvent(QKeyEvent *event)  //实现一些键盘操作
-    {
-        if(event->key()==Qt::Key_Escape&&Fullsize)
-        {
-            Fullsize = false;
-            showNormal();
-             ui->statusBar->showMessage(" ");   //清空状态栏中的信息
-        }
-    }
-
 void MainWindow::on_copy()          //调用Qt中自带的拷贝函数
 {
     ui->textEdit_2->copy();
@@ -131,8 +121,10 @@ void MainWindow::run_it()//运行
 }
 void MainWindow::ann_it()     //添加注释的功能
 {
-//    QString text="/*\n */ ";
-//    ui->textEdit_2->textCursor().insertText(text);
+    QTextCursor cursor;
+    cursor = ui->textEdit_2->textCursor();
+    QString str=cursor.selectedText();
+    cursor.insertText("/*"+str+"*/");
 }
 void MainWindow::cann_it()    //取消注释
 {
@@ -148,3 +140,18 @@ void MainWindow::cind_it()   //取消缩进
 {
 
 }
+void   MainWindow:: keyPressEvent(QKeyEvent *event)  //实现一些键盘操作
+   {
+       if(event->key()==Qt::Key_Escape&&Fullsize)
+       {
+           Fullsize = false;
+           showNormal();
+            ui->statusBar->showMessage(" ");   //清空状态栏中的信息
+       }
+       if(event->modifiers()==Qt::ControlModifier)
+       {
+           if(event->key()==Qt::Key_Slash)
+                ann_it();
+       }
+
+   }
