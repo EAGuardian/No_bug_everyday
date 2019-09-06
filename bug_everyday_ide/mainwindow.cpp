@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "filedeal.h"    //文件处理头文件(打开\保存)
+#include<string>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -13,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
     filenum=0;
     cus=1;
     /*以下部分是函数信号槽*/
+
+
+
     connect(ui->actioncpy,SIGNAL(triggered()),this,SLOT(on_copy()));        //复制
     connect(ui->actioncut,SIGNAL(triggered()),this,SLOT(cut_it()));             //剪切
     connect(ui->actionpst,SIGNAL(triggered()),this,SLOT(paste_it()));           //粘贴
@@ -22,8 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->action_op,&QAction::triggered,this,[=](){OpenFile();});         //打开文件
     connect(ui->action_save,&QAction::triggered,this,[=](){SaveFile(cus);});        //保存文件
     connect(ui->action_sava,&QAction::triggered,this,[=](){Save_asFile();});        //另存为文件
- //   connect(ui->actionrun,&QAction::triggered,this,[=](){SaveFile(isopenfile,fpath);edit_it();run_it();});      //运行
- //   connect(ui->actionedit,&QAction::triggered,this,[=](){SaveFile(isopenfile,fpath);edit_it();});          //编译
+    connect(ui->actionrun,&QAction::triggered,this,[=](){SaveFile(cus);if(edit_it())run_it();});      //运行
+    connect(ui->actionedit,&QAction::triggered,this,[=](){SaveFile(cus);edit_it();});          //编译
     connect(ui->actionann,SIGNAL(triggered()),this,SLOT(ann_it()));   //注释函数
     connect(ui->actioncann,SIGNAL(triggered()),this,SLOT(cann_it()));   //取消注释函数
     connect(ui->actionind,SIGNAL(triggered()),this,SLOT(ind_it()));   //缩进函数
@@ -45,16 +49,6 @@ void MainWindow::sleep(unsigned int tim)        //延时函数
            QCoreApplication::processEvents(QEventLoop::AllEvents,100);   // 最小循环时间是0.1秒
        }
 }
-
- void   MainWindow:: keyPressEvent(QKeyEvent *event)  //实现一些键盘操作
-    {
-        if(event->key()==Qt::Key_Escape&&Fullsize)
-        {
-            Fullsize = false;
-            showNormal();
-             ui->statusBar->showMessage(" ");   //清空状态栏中的信息
-        }
-    }
 
 void MainWindow::on_copy()          //调用Qt中自带的拷贝函数
 {
@@ -94,25 +88,44 @@ void MainWindow::full_screen()
     sleep(1500);
     ui->statusBar->showMessage(tr("    按下ESC按键退出全屏"));
 }
-//void MainWindow::edit_it()      //编译
-//{
-//    QString destname = fpath;
-//    destname.replace(".c",".exe");
-//    QString command = "gcc -o " + destname +" "+ fpath;
-//    system(command.toStdString().data());
-//}
+bool MainWindow::edit_it()//编译
+{
+    QString destname = myfile[currentfile].Path;
+    QString fpath = myfile[currentfile].Path;
+    int edit_con = -50;
+    destname.replace(".c",".exe");
+    QString command = "gcc -o " + destname +" "+ fpath + " 2> error.txt";
 
-//void MainWindow::run_it()       //运行
-//{
-//    QString destname = fpath;
-//    destname.replace(".c",".exe");
-//    system(destname.toStdString().data());
-//}
-
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    QFile file("error.txt");
+    file.open(QIODevice::ReadWrite);
+    QByteArray array = file.readAll();
+    ui->textEdit_3->setText(codec->toUnicode(array));
+    file.close();
+    if(!array.isEmpty()){//编译错误
+        qDebug()<<"edit error!";
+        return false;
+//        ui->setupUi(editerror);
+    }
+    else//编译成功
+    {
+        qDebug()<<"edit success!";
+        return true;
+    }
+}
+void MainWindow::run_it()//运行
+{
+    QString destname = myfile[currentfile].Path;
+    destname.replace(".c",".exe");
+    system(destname.toStdString().data());
+    qDebug()<<"run success!";
+}
 void MainWindow::ann_it()     //添加注释的功能
 {
-//    QString text="/*\n */ ";
-//    ui->textEdit_2->textCursor().insertText(text);
+    QTextCursor cursor;
+    cursor = ui->textEdit_2->textCursor();
+    QString str=cursor.selectedText();
+    cursor.insertText("/*"+str+"*/");
 }
 void MainWindow::cann_it()    //取消注释
 {
@@ -120,11 +133,32 @@ void MainWindow::cann_it()    //取消注释
 }
 void MainWindow::ind_it()     //添加缩进的功能
 {
-//    ui->textEdit_2 =  new QTextEdit(this);
-//    QTextCursor cursor = ui->textEdit_2->textCursor();
+    QTextCursor cursor;
+    cursor = ui->textEdit_2->textCursor();
+    QString str=cursor.selectedText();
+    int length = str.length();
+    //str.replace("\\n","\n");
+    cursor.insertText("\t"+str);
+    qDebug()<<str;
+   // cursor.insertText("\t"+str);
 
 }
 void MainWindow::cind_it()   //取消缩进
 {
 
 }
+void   MainWindow:: keyPressEvent(QKeyEvent *event)  //实现一些键盘操作
+   {
+       if(event->key()==Qt::Key_Escape&&Fullsize)
+       {
+           Fullsize = false;
+           showNormal();
+            ui->statusBar->showMessage(" ");   //清空状态栏中的信息
+       }
+       if(event->modifiers()==Qt::ControlModifier)
+       {
+           if(event->key()==Qt::Key_Slash)
+                ann_it();
+       }
+
+   }
