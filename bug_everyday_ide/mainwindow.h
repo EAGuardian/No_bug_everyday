@@ -50,12 +50,13 @@ private slots:
         void reg_it();          //声明恢复函数
         bool edit_it();         //声明编译函数
         void run_it();           //声明运行函数
-        void ann_it();      //声明添加注释函数
+        void ann_it();      //声明添加行类注释函数
         void cann_it();     //声明取消注释函数
         void ind_it();      //声明缩进函数
         void cind_it();      //声明取消缩进函数
         void full_screen(); //声明全屏函数
         void on_treeWidget_customContextMenuRequested(const QPoint &pos);
+        void mark_it();     //注释
 };
 
 #endif // MAINWINDOW_H

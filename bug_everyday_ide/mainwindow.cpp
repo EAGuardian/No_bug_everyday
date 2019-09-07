@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionind,SIGNAL(triggered()),this,SLOT(ind_it()));   //缩进函数
     connect(ui->actioncind,SIGNAL(triggered()),this,SLOT(cind_it()));   //取消缩进函数
     connect(ui->actionfs,SIGNAL(triggered()),this,SLOT(full_screen()));    //全屏信号槽
+    connect(ui->actionsdfs,SIGNAL(triggered()),this,SLOT(mark_it()));
     connect(ui->treeWidget,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(TreeWidgetClick(QTreeWidgetItem *,int)));
 }
 
@@ -123,24 +124,52 @@ void MainWindow::run_it()//运行
     system(destname.toStdString().data());
     qDebug()<<"run success!";
 }
-void MainWindow::ann_it()     //添加注释的功能
+
+void MainWindow::ann_it()     //行类注释的功能
 {
     QTextCursor cursor;
     cursor = ui->EditWidget->textCursor();
     QString str=cursor.selectedText();
-    cursor.insertText("/*"+str+"*/");
+    int length = str.length();
+    QString first = "/*";
+    QString last ="*/";
+    if(str.mid(0,2) == first && str.mid(length-2) == last)      //判断是否存在注释
+  //mid（n,m）函数截取从第n个字符后的m个字符，如果无m则截取到结尾
+    {
+        cursor.insertText(str.mid(2,length-4));
+    }
+    else  cursor.insertText("/*"+str+"*/");
+}
+void MainWindow::mark_it()     //注释
+{
+    QTextCursor str = ui->EditWidget->textCursor();
+
+
 }
 void MainWindow::cann_it()    //取消注释
 {
 
 }
+
 void MainWindow::ind_it()     //添加缩进的功能
 {
     QTextCursor cursor;
     cursor = ui->EditWidget->textCursor();
     QString str=cursor.selectedText();
-    //str.replace("\\n","\n");
-    cursor.insertText("\t"+str);
+    QString cmp = "\n";
+    int length = str.length();
+    for(int i = 0; i < length ;i++)
+    {
+        qDebug()<<str.mid(i,1);
+        qDebug()<<cmp;
+        if(str.mid(i,1)==10)
+        {
+            str = str.mid(0,i+1)+"\t"+str.mid(i+1);
+            i++;
+            length = length+1;
+        }
+    }
+    qDebug()<<length;
     qDebug()<<str;
    // cursor.insertText("\t"+str);
 
