@@ -20,11 +20,13 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void NewFile();   //新建文件
     void OpenFile();  //打开文件
     void SaveFile(int);  //保存文件
     void Save_asFile(); //另存为文件
     void InitFileList(); //初始化文件列表
     void addFileList(MyFile); //添加文件列表
+    void CloseFile();         //关闭文件
     void keyPressEvent(QKeyEvent * event);  //获取键盘按键函数
     void sleep(unsigned int);   //延时运行函数
     bool Fullsize = false;   //用于记录是否处于全屏模式
@@ -53,6 +55,7 @@ private slots:
         void ind_it();      //声明缩进函数
         void cind_it();      //声明取消缩进函数
         void full_screen(); //声明全屏函数
+        void on_treeWidget_customContextMenuRequested(const QPoint &pos);
 };
 
 #endif // MAINWINDOW_H
