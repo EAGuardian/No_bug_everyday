@@ -60,7 +60,7 @@
      <x>0</x>
      <y>0</y>
      <width>887</width>
-     <height>23</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_file">
@@ -80,7 +80,6 @@
     <addaction name="action_op"/>
     <addaction name="action_save"/>
     <addaction name="action_sava"/>
-    <addaction name="action_savas"/>
     <addaction name="action_saval"/>
     <addaction name="separator"/>
     <addaction name="action_closal"/>
@@ -97,8 +96,9 @@
     <addaction name="actionpst"/>
     <addaction name="actionsal"/>
     <addaction name="separator"/>
-    <addaction name="actionann"/>
+    <addaction name="actionsdfs"/>
     <addaction name="actioncann"/>
+    <addaction name="actionann"/>
     <addaction name="actionind"/>
     <addaction name="actioncind"/>
    </widget>
@@ -146,7 +146,6 @@
     <addaction name="separator"/>
     <addaction name="action_jdx"/>
     <addaction name="action_cjh"/>
-    <addaction name="action_lh"/>
     <addaction name="action_ssq"/>
    </widget>
    <addaction name="menu_file"/>
@@ -171,6 +170,12 @@
    <addaction name="separator"/>
    <addaction name="actionedit"/>
    <addaction name="actionrun"/>
+   <addaction name="actioncpr"/>
+   <addaction name="separator"/>
+   <addaction name="actionreg"/>
+   <addaction name="action_redo"/>
+   <addaction name="separator"/>
+   <addaction name="actionfs"/>
    <addaction name="separator"/>
    <addaction name="action_close"/>
   </widget>
@@ -183,6 +188,9 @@
    <property name="text">
     <string>打开</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="action_save">
    <property name="icon">
@@ -192,15 +200,13 @@
    <property name="text">
     <string>保存</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="action_sava">
    <property name="text">
     <string>另存为</string>
-   </property>
-  </action>
-  <action name="action_savas">
-   <property name="text">
-    <string>另存项目为</string>
    </property>
   </action>
   <action name="action_saval">
@@ -230,6 +236,9 @@
    <property name="text">
     <string>新建源代码</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
   </action>
   <action name="action_p">
    <property name="text">
@@ -237,43 +246,75 @@
    </property>
   </action>
   <action name="action_redo">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/resource/right.png</normaloff>:/resource/right.png</iconset>
+   </property>
    <property name="text">
     <string>重做</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
+   </property>
   </action>
   <action name="actionreg">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/resource/left.png</normaloff>:/resource/left.png</iconset>
+   </property>
    <property name="text">
     <string>恢复</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
    </property>
   </action>
   <action name="actioncut">
    <property name="text">
     <string>剪切</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
   </action>
   <action name="actioncpy">
    <property name="text">
     <string>拷贝</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
    </property>
   </action>
   <action name="actionpst">
    <property name="text">
     <string>粘贴</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
   </action>
   <action name="actionsal">
    <property name="text">
     <string>选择全部</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
   </action>
   <action name="actionann">
    <property name="text">
-    <string>注释</string>
+    <string>切换行类注释</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+;</string>
    </property>
   </action>
   <action name="actioncann">
    <property name="text">
     <string>取消注释</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+/</string>
    </property>
   </action>
   <action name="actionind">
@@ -304,6 +345,9 @@
    <property name="text">
     <string>编译</string>
    </property>
+   <property name="shortcut">
+    <string>F9</string>
+   </property>
   </action>
   <action name="actionrun">
    <property name="icon">
@@ -313,10 +357,20 @@
    <property name="text">
     <string>运行</string>
    </property>
+   <property name="shortcut">
+    <string>F10</string>
+   </property>
   </action>
   <action name="actioncpr">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/resource/bay.png</normaloff>:/resource/bay.png</iconset>
+   </property>
    <property name="text">
     <string>编译运行</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
    </property>
   </action>
   <action name="actioncla">
@@ -330,8 +384,15 @@
    </property>
   </action>
   <action name="actionfs">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/resource/full screen.png</normaloff>:/resource/full screen.png</iconset>
+   </property>
    <property name="text">
     <string>全屏</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
   </action>
   <action name="actionf">
@@ -354,14 +415,17 @@
     <string>陈家辉</string>
    </property>
   </action>
-  <action name="action_lh">
-   <property name="text">
-    <string>罗欢</string>
-   </property>
-  </action>
   <action name="action_ssq">
    <property name="text">
     <string>孙少卿</string>
+   </property>
+  </action>
+  <action name="actionsdfs">
+   <property name="text">
+    <string>注释</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+/</string>
    </property>
   </action>
  </widget>

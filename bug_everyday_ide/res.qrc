@@ -1,10 +1,22 @@
 <RCC>
     <qresource prefix="/">
         <file>resource/new.png</file>
-        <file>resource/open.png</file>
+        
+<file>resource/open.png</file>
         <file>resource/save.png</file>
-        <file>resource/close.png</file>
+        
+<file>resource/close.png</file>
         <file>resource/compile.png</file>
-        <file>resource/run.png</file>
-    </qresource>
+        
+<file>resource/run.png</file>
+  
+<file>resource/left.png</file>
+
+<file>resource/right.png</file>
+
+<file>resource/full screen.png</file>
+  
+<file>resource/bay.png</file>
+  
+</qresource>
 </RCC>
