@@ -10,6 +10,7 @@
 #include<QApplication>
 #include "myfile.h"
 #include "find_dialog.h"
+#include <Qsci/qsciscintilla.h>
 namespace Ui {
 class MainWindow;
 }
@@ -37,7 +38,8 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    MyFile myfile[11];  //我的文件类，包含文件各种信息,具体定义在头文件
+    QsciScintilla *textEdit;
+    MyFile myfile[11];  //我的文件类，包含文件各种信息,具体定义在头文件 
     int filenum;       //文件总数
     int cus;           //记录文件编号
     int currentfile;   //当前打开文件编号
@@ -60,6 +62,7 @@ private slots:
         void mark_it();     //注释
         void search_show();      //声明搜索窗口函数
         void search(find_dialog *find_dlg);      //声明搜索函数
+        void replace(find_dialog *find_dlg); //替换
 };
 
 #endif // MAINWINDOW_H

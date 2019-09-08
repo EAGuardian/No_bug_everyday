@@ -15,7 +15,7 @@ void MainWindow::NewFile(){
     QString str="";
     file.write(str.toUtf8()); //以UTF-8编码方式写入文件
     file.close(); //关闭文件
-    ui->EditWidget->setEnabled(true);
+    textEdit->setEnabled(true);
     ui->ResultWidget->setEnabled(true);
     myfile[cus].no = cus;
     myfile[cus].Path = path;           //类成员存储文件路径
@@ -24,7 +24,7 @@ void MainWindow::NewFile(){
     myfile[cus].Info=new QFileInfo(path);
     myfile[cus].File->open(QIODevice::ReadWrite);   //以读写方式打开
     myfile[cus].Array= myfile[cus].File->readAll();  //读写文件信息存入QByteArray类
-    ui->EditWidget->setText(codec->toUnicode(myfile[cus].Array));  //在编辑窗口显示
+    textEdit->setText(codec->toUnicode(myfile[cus].Array));  //在编辑窗口显示
     myfile[cus].isopenfile=true;  //文件是否成功打开变量
     addFileList(myfile[cus]);
     myfile[cus].File->close();  //关闭文件
@@ -42,7 +42,7 @@ void MainWindow::OpenFile()
         qDebug()<<"用户取消";
         return ;
     }
-    ui->EditWidget->setEnabled(true);
+    textEdit->setEnabled(true);
     ui->ResultWidget->setEnabled(true);
     myfile[cus].no = cus;
     myfile[cus].Path = path;           //类成员存储文件路径
@@ -51,7 +51,7 @@ void MainWindow::OpenFile()
     myfile[cus].Info=new QFileInfo(path);
     myfile[cus].File->open(QIODevice::ReadWrite);   //以读写方式打开
     myfile[cus].Array= myfile[cus].File->readAll();  //读写文件信息存入QByteArray类
-    ui->EditWidget->setText(codec->toUnicode(myfile[cus].Array));  //在编辑窗口显示
+    textEdit->setText(codec->toUnicode(myfile[cus].Array));  //在编辑窗口显示
     myfile[cus].isopenfile=true;  //文件是否成功打开变量
     addFileList(myfile[cus]);
     myfile[cus].File->close();  //关闭文件
@@ -71,7 +71,7 @@ void MainWindow::SaveFile(int currentfile){
     qDebug() << myfile[currentfile].Path;
     file.setFileName(myfile[currentfile].Path); //存入打开的文件
     file.open(QIODevice::WriteOnly); //读写方式打开
-    QString str=ui->EditWidget->toPlainText(); //读取编辑区文字
+    QString str=textEdit->text(); //读取编辑区文字
     file.write(str.toUtf8()); //以UTF-8编码方式写入文件
     qDebug()<<"save succeed!";
     file.close(); //关闭文件
@@ -86,7 +86,7 @@ void MainWindow::Save_asFile()   {
     QFile file;
     file.setFileName(path); //存入打开的文件
     file.open(QIODevice::WriteOnly); //以写方式打开
-    QString str=ui->EditWidget->toPlainText(); //读取编辑区文字
+    QString str=textEdit->text(); //读取编辑区文字
     file.write(str.toUtf8()); //以UTF-8编码方式写入文件
     qDebug()<<"另存为文件成功";
     file.close(); //关闭文件
@@ -96,8 +96,8 @@ void MainWindow::CloseFile(){
     ui->treeWidget->takeTopLevelItem(currentfile);
     currentfile--;
     cus--;
-    ui->EditWidget->setText("");
-    ui->EditWidget->setEnabled(false);
+    textEdit->setText("");
+    textEdit->setEnabled(false);
     ui->ResultWidget->setEnabled(false);
 }
 //增加文件至窗口树
@@ -112,14 +112,14 @@ void MainWindow::addFileList(MyFile File){
 void MainWindow::TreeWidgetClick(QTreeWidgetItem *item,int column){
     qDebug() << item->text(0) << item->text(1);
     if(item->text(1)==""){return;}       //点击的文件路径为空，返回
-    ui->EditWidget->setEnabled(true);
+    textEdit->setEnabled(true);
     ui->ResultWidget->setEnabled(true);
     QFile CurrentFile(item->text(1));
     currentfile=item->text(2).toInt();
     CurrentFile.open(QIODevice::ReadWrite);
     QByteArray array= CurrentFile.readAll();
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");   //文件编码方式
-    ui->EditWidget->setText(codec->toUnicode(array));
+    textEdit->setText(codec->toUnicode(array));
     CurrentFile.close();
 }
 #endif // FILEDEAL_H
