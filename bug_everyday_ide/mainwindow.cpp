@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "filedeal.h"    //文件处理头文件(打开\保存)
+#include "find_dialog.h"
 #include<string>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -37,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionind,SIGNAL(triggered()),this,SLOT(ind_it()));   //缩进函数
     connect(ui->actioncind,SIGNAL(triggered()),this,SLOT(cind_it()));   //取消缩进函数
     connect(ui->actionfs,SIGNAL(triggered()),this,SLOT(full_screen()));    //全屏信号槽
+    connect(ui->actionsrh,&QAction::triggered,this,&MainWindow::search_show);   //搜索
     connect(ui->actionsdfs,SIGNAL(triggered()),this,SLOT(mark_it()));
     connect(ui->treeWidget,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(TreeWidgetClick(QTreeWidgetItem *,int)));
 }
@@ -211,5 +213,28 @@ void MainWindow::on_treeWidget_customContextMenuRequested(const QPoint &pos)    
         popMenu->addAction(ui->action_close);//往菜单内添加QAction   该action在前面用设计器定义了
         popMenu->exec(QCursor::pos());//弹出右键菜单，菜单位置为光标位置
     }
+
+}
+
+void MainWindow::search_show(){  //搜索窗口
+    find_dialog *find_dlg = new find_dialog();
+    find_dlg->setAttribute(Qt::WA_DeleteOnClose);
+    find_dlg->setWindowTitle(tr("查找"));
+    connect(find_dlg,&find_dialog::start_search,this,[=](){search(find_dlg);});
+    find_dlg->show();
+}
+
+void MainWindow::search(find_dialog *find_dlg)   //搜索
+{
+    QString str = find_dlg->find_text;
+    bool isfind;
+    if(find_dlg->distinguish)   //true区分大小写，false不区分
+        isfind = ui->EditWidget->find(str,QTextDocument::FindCaseSensitively);
+    else
+        isfind = ui->EditWidget->find(str);
+    if(!isfind)//查找不到
+        qDebug()<<QString(tr("查找%1失败").arg(str));
+    else
+        qDebug()<<QString(tr("查找%1成功").arg(str));
 
 }
