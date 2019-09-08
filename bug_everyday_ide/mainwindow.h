@@ -9,6 +9,7 @@
 #include<QTime>
 #include<QApplication>
 #include "myfile.h"
+#include "find_dialog.h"
 namespace Ui {
 class MainWindow;
 }
@@ -57,6 +58,8 @@ private slots:
         void full_screen(); //声明全屏函数
         void on_treeWidget_customContextMenuRequested(const QPoint &pos);
         void mark_it();     //注释
+        void search_show();      //声明搜索窗口函数
+        void search(find_dialog *find_dlg);      //声明搜索函数
 };
 
 #endif // MAINWINDOW_H
