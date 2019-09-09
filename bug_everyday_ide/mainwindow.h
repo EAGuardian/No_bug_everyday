@@ -11,6 +11,12 @@
 #include "myfile.h"
 #include "find_dialog.h"
 #include <Qsci/qsciscintilla.h>
+//Lua语言的词法分析器
+#include <Qsci/qscilexerlua.h>
+//自动补全的apis
+#include <Qsci/qsciapis.h>
+#include<Qsci/qscilexercpp.h>
+
 namespace Ui {
 class MainWindow;
 }

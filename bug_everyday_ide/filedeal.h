@@ -42,6 +42,7 @@ void MainWindow::OpenFile()
         qDebug()<<"用户取消";
         return ;
     }
+    qDebug() << path;
     textEdit->setEnabled(true);
     ui->ResultWidget->setEnabled(true);
     myfile[cus].no = cus;

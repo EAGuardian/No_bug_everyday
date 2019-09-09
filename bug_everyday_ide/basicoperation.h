@@ -142,11 +142,11 @@ void   MainWindow:: keyPressEvent(QKeyEvent *event)  //实现一些键盘操作
            showNormal();
             ui->statusBar->showMessage(" ");   //清空状态栏中的信息
        }
-       if(event->modifiers()==Qt::ControlModifier)
-       {
-           if(event->key()==Qt::Key_Slash)
-                ann_it();
-       }
+//       if(event->modifiers()==Qt::ControlModifier)
+//       {
+//           if(event->key()==Qt::Key_Slash)
+//                ann_it();
+//       }
 
    }
 

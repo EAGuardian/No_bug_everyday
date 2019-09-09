@@ -14,10 +14,36 @@ MainWindow::MainWindow(QWidget *parent) :
     textEdit = new QsciScintilla;
     textEdit->setObjectName(QStringLiteral("textEdit"));
     textEdit->setMarginType(0,QsciScintilla::NumberMargin);//设置编号为0的页边显示行号
-    textEdit->setMarginWidth(0,15);//设置页边宽度
+    textEdit->setMarginWidth(0,25);//设置页边宽度
     ui->splitter->addWidget(textEdit);
     ui->splitter->setStretchFactor(0,1);
     ui->splitter->setStretchFactor(1,6);
+    //设置textEdit的一些功能
+    QsciLexerCPP *textLexer;
+    textLexer = new QsciLexerCPP;
+    textLexer->setColor(QColor(Qt::darkGreen),QsciLexerCPP::DoubleQuotedString);
+    textLexer->setColor(QColor(Qt::darkRed),QsciLexerCPP::Keyword);
+    textLexer->setColor(QColor(Qt::darkGreen),QsciLexerCPP::PreProcessor );
+    textEdit->setLexer(textLexer);
+    QsciAPIs *apis = new QsciAPIs(textLexer);
+    //在这里可以添加自定义的自动完成函数
+    //apis->add(QString("func_name(arg_1,arg_2) function info"));
+    apis->prepare();
+    //设置自动完成所有项
+    textEdit->setAutoCompletionSource(QsciScintilla::AcsAll);
+    //设置大小写敏感
+    textEdit->setAutoCompletionCaseSensitivity(true);
+    //每输入1个字符就出现自动完成的提示
+    textEdit->setAutoCompletionThreshold(1);
+    //开启自动缩进
+    textEdit->setAutoIndent(true);
+    //设置缩进的显示方式
+    textEdit->setIndentationGuides(QsciScintilla::SC_IV_LOOKBOTH);
+    //左侧行号显示的背景色
+    textEdit->setMarginsBackgroundColor(Qt::lightGray);
+    //设置括号匹配
+    textEdit->setBraceMatching(QsciScintilla::SloppyBraceMatch);
+
     filenum=0;
     currentfile=0;
     cus=0;
