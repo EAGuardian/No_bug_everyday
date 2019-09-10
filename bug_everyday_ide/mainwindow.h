@@ -9,6 +9,14 @@
 #include<QTime>
 #include<QApplication>
 #include "myfile.h"
+#include "find_dialog.h"
+#include <Qsci/qsciscintilla.h>
+//Lua语言的词法分析器
+#include <Qsci/qscilexerlua.h>
+//自动补全的apis
+#include <Qsci/qsciapis.h>
+#include<Qsci/qscilexercpp.h>
+
 namespace Ui {
 class MainWindow;
 }
@@ -20,11 +28,13 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void NewFile();   //新建文件
     void OpenFile();  //打开文件
     void SaveFile(int);  //保存文件
     void Save_asFile(); //另存为文件
     void InitFileList(); //初始化文件列表
     void addFileList(MyFile); //添加文件列表
+    void CloseFile();         //关闭文件
     void keyPressEvent(QKeyEvent * event);  //获取键盘按键函数
     void sleep(unsigned int);   //延时运行函数
     bool Fullsize = false;   //用于记录是否处于全屏模式
@@ -34,7 +44,8 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    MyFile myfile[11];  //我的文件类，包含文件各种信息,具体定义在头文件
+    QsciScintilla *textEdit;
+    MyFile myfile[11];  //我的文件类，包含文件各种信息,具体定义在头文件 
     int filenum;       //文件总数
     int cus;           //记录文件编号
     int currentfile;   //当前打开文件编号
@@ -48,11 +59,16 @@ private slots:
         void reg_it();          //声明恢复函数
         bool edit_it();         //声明编译函数
         void run_it();           //声明运行函数
-        void ann_it();      //声明添加注释函数
+        void ann_it();      //声明添加行类注释函数
         void cann_it();     //声明取消注释函数
         void ind_it();      //声明缩进函数
         void cind_it();      //声明取消缩进函数
         void full_screen(); //声明全屏函数
+        void on_treeWidget_customContextMenuRequested(const QPoint &pos);
+        void mark_it();     //注释
+        void search_show();      //声明搜索窗口函数
+        void search(find_dialog *find_dlg);      //声明搜索函数
+        void replace(find_dialog *find_dlg); //替换
 };
 
 #endif // MAINWINDOW_H
