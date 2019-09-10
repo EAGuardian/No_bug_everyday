@@ -171,7 +171,6 @@
    <addaction name="actionrun"/>
    <addaction name="actioncpr"/>
    <addaction name="separator"/>
-<<<<<<< HEAD
    <addaction name="actioncpy"/>
    <addaction name="actionpst"/>
    <addaction name="actioncut"/>
@@ -179,8 +178,6 @@
    <addaction name="actionrep"/>
    <addaction name="actionsrh"/>
    <addaction name="separator"/>
-=======
->>>>>>> 0ff2d226de3657ecf57f67c9ec1568dfbc40ac1a
    <addaction name="actionreg"/>
    <addaction name="action_redo"/>
    <addaction name="separator"/>

@@ -61,7 +61,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->action_close,&QAction::triggered,this,[=](){CloseFile();});        //关闭当前文件
     connect(ui->actionrun,&QAction::triggered,this,[=](){SaveFile(currentfile);if(edit_it())run_it();});      //运行
     connect(ui->actionedit,&QAction::triggered,this,[=](){SaveFile(currentfile);edit_it();});          //编译
-<<<<<<< HEAD
     //connect(ui->actionann,SIGNAL(triggered()),this,SLOT(ann_it()));   //行内注释
     connect(ui->actioncann,SIGNAL(triggered()),this,SLOT(cann_it()));   //取消注释函数
     connect(ui->actionind,SIGNAL(triggered()),this,SLOT(ind_it()));   //缩进函数
@@ -69,15 +68,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionfs,SIGNAL(triggered()),this,SLOT(full_screen()));    //全屏信号槽
     connect(ui->actionsrh,&QAction::triggered,this,&MainWindow::search_show);   //搜索
     connect(ui->actionsdfs,SIGNAL(triggered()),this,SLOT(mark_it()));   //注释
-=======
-//    connect(ui->actionann,SIGNAL(triggered()),this,SLOT(ann_it()));   //注释函数
-//    connect(ui->actioncann,SIGNAL(triggered()),this,SLOT(cann_it()));   //取消注释函数
-//    connect(ui->actionind,SIGNAL(triggered()),this,SLOT(ind_it()));   //缩进函数
-//    connect(ui->actioncind,SIGNAL(triggered()),this,SLOT(cind_it()));   //取消缩进函数
-    connect(ui->actionfs,SIGNAL(triggered()),this,SLOT(full_screen()));    //全屏信号槽
-    connect(ui->actionsrh,&QAction::triggered,this,&MainWindow::search_show);   //搜索
-//    connect(ui->actionsdfs,SIGNAL(triggered()),this,SLOT(mark_it()));   //替换
->>>>>>> 0ff2d226de3657ecf57f67c9ec1568dfbc40ac1a
     connect(ui->treeWidget,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(TreeWidgetClick(QTreeWidgetItem *,int)));
 }
 

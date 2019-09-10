@@ -8,7 +8,6 @@
 <file>resource/close.png</file>
         <file>resource/compile.png</file>
         
-<<<<<<< HEAD
 
 <file>resource/run.png</file>
 
@@ -18,10 +17,6 @@
 <file>resource/copy.png</file>
 <file>resource/replace.png</file>
 <file>resource/paste.png</file>  
-=======
-<file>resource/run.png</file>
-  
->>>>>>> 0ff2d226de3657ecf57f67c9ec1568dfbc40ac1a
 <file>resource/left.png</file>
 
 <file>resource/right.png</file>

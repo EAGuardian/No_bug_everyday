@@ -2,11 +2,8 @@
 #define BASICOPERATION_H
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-<<<<<<< HEAD
 #include<string>
 #include<qstring.h>
-=======
->>>>>>> 0ff2d226de3657ecf57f67c9ec1568dfbc40ac1a
 void MainWindow::sleep(unsigned int tim)        //延时函数
 {
        QTime reachtime = QTime::currentTime().addMSecs(tim);        //获取当前时间加上你需要延时的时间
@@ -89,11 +86,7 @@ void MainWindow::run_it()//运行
 void MainWindow::ann_it()     //行类注释的功能
 {
 //    QTextCursor cursor;
-<<<<<<< HEAD
 //    cursor = textEdit->topa;
-=======
-//    cursor = ui->EditWidget->textCursor();
->>>>>>> 0ff2d226de3657ecf57f67c9ec1568dfbc40ac1a
 //    QString str=cursor.selectedText();
 //    int length = str.length();
 //    QString first = "/*";
@@ -105,7 +98,6 @@ void MainWindow::ann_it()     //行类注释的功能
 //    }
 //    else  cursor.insertText("/*"+str+"*/");
 }
-<<<<<<< HEAD
 
 
 void MainWindow::mark_it()     //注释&取消注释
@@ -211,45 +203,10 @@ void MainWindow::ind_it()     //添加缩进的功能
          int lineStart  = textEdit->SendScintilla(QsciScintillaBase::SCI_POSITIONFROMLINE,i);       //获取这一行中的开头位置
           textEdit->SendScintilla(QsciScintillaBase::SCI_INSERTTEXT, lineStart, "\t");  //在这一行的lineIndent的位置插入“//”
     }
-=======
-void MainWindow::mark_it()     //注释
-{
-//    QTextCursor str = ui->EditWidget->textCursor();
-
-
-}
-void MainWindow::cann_it()    //取消注释
-{
-
-}
-
-void MainWindow::ind_it()     //添加缩进的功能
-{
-//    QTextCursor cursor;
-//    cursor = ui->EditWidget->textCursor();
-//    QString str=cursor.selectedText();
-//    QString cmp = "\n";
-//    int length = str.length();
-//    for(int i = 0; i < length ;i++)
-//    {
-//        qDebug()<<str.mid(i,1);
-//        qDebug()<<cmp;
-//        if(str.mid(i,1)==10)
-//        {
-//            str = str.mid(0,i+1)+"\t"+str.mid(i+1);
-//            i++;
-//            length = length+1;
-//        }
-//    }
-//    qDebug()<<length;
-//    qDebug()<<str;
-//   // cursor.insertText("\t"+str);
->>>>>>> 0ff2d226de3657ecf57f67c9ec1568dfbc40ac1a
 
 }
 void MainWindow::cind_it()   //取消缩进
 {
-<<<<<<< HEAD
     bool judge = true;
     bool flag = true;
     int selectionStart =textEdit->SendScintilla(QsciScintillaBase::SCI_GETSELECTIONSTART);     //获取当前选择开头部分的位置
@@ -291,9 +248,6 @@ void MainWindow::cind_it()   //取消缩进
                  textEdit->SendScintilla(QsciScintillaBase::SCI_DELETERANGE, lineStart, 1);
          }
     }
-=======
-
->>>>>>> 0ff2d226de3657ecf57f67c9ec1568dfbc40ac1a
 }
 void   MainWindow:: keyPressEvent(QKeyEvent *event)  //实现一些键盘操作
    {
