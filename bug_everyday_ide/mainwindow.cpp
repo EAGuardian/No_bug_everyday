@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->action_close,&QAction::triggered,this,[=](){CloseFile();});        //关闭当前文件
     connect(ui->actionrun,&QAction::triggered,this,[=](){SaveFile(currentfile);if(edit_it())run_it();});      //运行
     connect(ui->actionedit,&QAction::triggered,this,[=](){SaveFile(currentfile);edit_it();});          //编译
-    //connect(ui->actionann,SIGNAL(triggered()),this,SLOT(ann_it()));   //行内注释
+    connect(ui->actionann,SIGNAL(triggered()),this,SLOT(ann_it()));   //行内注释
     connect(ui->actioncann,SIGNAL(triggered()),this,SLOT(cann_it()));   //取消注释函数
     connect(ui->actionind,SIGNAL(triggered()),this,SLOT(ind_it()));   //缩进函数
     connect(ui->actioncind,SIGNAL(triggered()),this,SLOT(cind_it()));   //取消缩进函数

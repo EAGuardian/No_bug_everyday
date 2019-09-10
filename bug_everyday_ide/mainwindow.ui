@@ -332,7 +332,7 @@
     <string>取消注释</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+/</string>
+    <string>Ctrl+Shift+/</string>
    </property>
   </action>
   <action name="actionind">
@@ -457,7 +457,7 @@
     <string>注释</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+/</string>
+    <string>Ctrl+Alt+/</string>
    </property>
   </action>
  </widget>

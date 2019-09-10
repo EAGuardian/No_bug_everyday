@@ -83,23 +83,51 @@ void MainWindow::run_it()//运行
     qDebug()<<"run success!";
 }
 
+
+//void MainWindow::ann_it()     //行类注释的功能
+//{
+//        QTextCursor cursor;
+//        cursor = textEdit->topa;
+//        QString str=cursor.selectedText();
+//        int length = str.length();
+//        QString first = "/*";
+//        QString last ="*/";
+//        if(str.mid(0,2) == first && str.mid(length-2) == last)      //判断是否存在注释
+//      //mid（n,m）函数截取从第n个字符后的m个字符，如果无m则截取到结尾
+//        {
+//            cursor.insertText(str.mid(2,length-4));
+//        }
+//        else  cursor.insertText("/*"+str+"*/");
+//}
 void MainWindow::ann_it()     //行类注释的功能
 {
-//    QTextCursor cursor;
-//    cursor = textEdit->topa;
-//    QString str=cursor.selectedText();
-//    int length = str.length();
-//    QString first = "/*";
-//    QString last ="*/";
-//    if(str.mid(0,2) == first && str.mid(length-2) == last)      //判断是否存在注释
-//  //mid（n,m）函数截取从第n个字符后的m个字符，如果无m则截取到结尾
-//    {
-//        cursor.insertText(str.mid(2,length-4));
-//    }
-//    else  cursor.insertText("/*"+str+"*/");
+    int selectionStart =textEdit->SendScintilla(QsciScintillaBase::SCI_GETSELECTIONSTART);     //获取当前选择开头部分的位置
+    int selectionEnd = textEdit->SendScintilla(QsciScintillaBase::SCI_GETSELECTIONEND);         //获取当前选择结束部分的位置
+
+//    int startLine = textEdit->SendScintilla(QsciScintillaBase::SCI_LINEFROMPOSITION,selectionStart);    //行开始的位置    从0作为第一排
+//    int endLine = textEdit->SendScintilla(QsciScintillaBase::SCI_LINEFROMPOSITION,selectionEnd);    //行结束的位置
+//    qDebug()<<selectionStart<<selectionEnd;
+//    qDebug()<<startLine<<endLine;
+//    int startcurrent = textEdit->SendScintilla(QsciScintillaBase::SCI_GETLINEINDENTPOSITION,startLine);
+//    int endtcurrent = textEdit->SendScintilla(QsciScintillaBase::SCI_GETLINEINDENTPOSITION,endLine+1);
+//    qDebug()<<startcurrent<<endtcurrent;
+
+    QString str = textEdit->selectedText();
+    QString first = "/*";
+    QString last ="*/";
+    int length = str.length();
+    if(str.mid(0,2) == first && str.mid(length-2) == last)     //判断是否存在注释
+    {
+        textEdit->SendScintilla(QsciScintillaBase::SCI_DELETERANGE,selectionStart , 2);
+         textEdit->SendScintilla(QsciScintillaBase::SCI_DELETERANGE,selectionEnd-4 , 2);
+    }
+    else
+    {
+        textEdit->SendScintilla(QsciScintillaBase::SCI_INSERTTEXT, selectionStart, "/*");
+        textEdit->SendScintilla(QsciScintillaBase::SCI_INSERTTEXT, selectionEnd+2, "*/");
+    }
+    //末尾位置-4与+2是通过测试测试出来的
 }
-
-
 void MainWindow::mark_it()     //注释&取消注释
 {
     bool judge = true;
@@ -221,17 +249,19 @@ void MainWindow::cind_it()   //取消缩进
 
     for(int i = startLine; i <= endLine ; ++i)
      {
+
          int lineStart  = textEdit->SendScintilla(QsciScintillaBase::SCI_POSITIONFROMLINE,i);       //获取这一行中的开头位置
          int lineEnd    = textEdit->SendScintilla(QsciScintillaBase::SCI_GETLINEENDPOSITION,i); //获取这一行中结束位置
 
          qDebug()<<"jdx"<<lineStart<<lineEnd;
 
          int lineBufferSize = lineEnd - lineStart +1;       //获取第i行的字符个数，便于建立数组
+
          char *buf =new char[lineBufferSize];
          textEdit->SendScintilla(QsciScintillaBase::SCI_GETTEXTRANGE, lineStart, lineEnd,buf);//把字符串拷贝进buf这个字符数组
          QString str = QString(QLatin1String(buf)); //将buf转换为Qstring类型；
          qDebug()<<str.mid(0,1);
-         if(str.mid(0,1) == "\t"||str.mid(0,8) == "        ")
+         if(str.mid(0,1) == "\t" ||str.mid(0,8) == "        ")
          {
              if(str.mid(0,8) == "        ")
                  flag = true;
@@ -255,7 +285,8 @@ void   MainWindow:: keyPressEvent(QKeyEvent *event)  //实现一些键盘操作
        {
            Fullsize = false;
            showNormal();
-            ui->statusBar->showMessage(" ");   //清空状态栏中的信息
+            ui->statusBar->showMessage("   ");   //清空状态栏中的信息
+            qDebug()<<"1";
        }
 //       if(event->modifiers()==Qt::ControlModifier)
 //       {
