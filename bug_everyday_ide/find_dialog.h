@@ -12,7 +12,7 @@ class find_dialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit find_dialog(QWidget *parent = 0);
+    explicit find_dialog(QWidget *parent = 0,int t=0);
     QString find_text;
     QString replace_text;
     bool distinguish;   //区分大小写，true区分，false不区分
@@ -31,6 +31,7 @@ private slots:
 
 private:
     Ui::find_dialog *ui;
+    int tab;
 };
 
 #endif // FIND_DIALOG_H

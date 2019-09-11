@@ -24,7 +24,11 @@
 
 <file>resource/full screen.png</file>
   
-<file>resource/bay.png</file>
+
+<file>resource/hide.png</file>
+ 
+<file>resource/display.png</file>
+ <file>resource/bay.png</file>
   
 </qresource>
 </RCC>

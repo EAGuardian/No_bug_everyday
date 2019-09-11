@@ -38,7 +38,7 @@
         </column>
         <column>
          <property name="text">
-          <string>新建列</string>
+          <string>文件路径</string>
          </property>
         </column>
         <column>
@@ -59,7 +59,7 @@
      <x>0</x>
      <y>0</y>
      <width>887</width>
-     <height>17</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_file">
@@ -112,6 +112,8 @@
     <property name="title">
      <string>视图</string>
     </property>
+    <addaction name="action_hide"/>
+    <addaction name="action_display"/>
    </widget>
    <widget class="QMenu" name="menu_run">
     <property name="title">
@@ -180,6 +182,9 @@
    <addaction name="separator"/>
    <addaction name="actionreg"/>
    <addaction name="action_redo"/>
+   <addaction name="separator"/>
+   <addaction name="action_hide"/>
+   <addaction name="action_display"/>
    <addaction name="separator"/>
    <addaction name="actionfs"/>
    <addaction name="separator"/>
@@ -458,6 +463,30 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Alt+/</string>
+   </property>
+  </action>
+  <action name="action_hide">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/resource/hide.png</normaloff>:/resource/hide.png</iconset>
+   </property>
+   <property name="text">
+    <string>隐藏注释</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
+  </action>
+  <action name="action_display">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/resource/display.png</normaloff>:/resource/display.png</iconset>
+   </property>
+   <property name="text">
+    <string>显示注释</string>
+   </property>
+   <property name="shortcut">
+    <string>F3</string>
    </property>
   </action>
  </widget>

@@ -30,11 +30,12 @@ public:
     ~MainWindow();
     void NewFile();   //新建文件
     void OpenFile();  //打开文件
-    void SaveFile(int);  //保存文件
+    bool SaveFile();  //保存文件
     void Save_asFile(); //另存为文件
     void InitFileList(); //初始化文件列表
     void addFileList(MyFile); //添加文件列表
-    void CloseFile();         //关闭文件
+    void CloseChooseFile();         //关闭选择的文件
+    void CloseCurrenteFile();       //关闭当前打开的文件
     void keyPressEvent(QKeyEvent * event);  //获取键盘按键函数
     void sleep(unsigned int);   //延时运行函数
     bool Fullsize = false;   //用于记录是否处于全屏模式
@@ -45,10 +46,24 @@ public slots:
 private:
     Ui::MainWindow *ui;
     QsciScintilla *textEdit;
-    MyFile myfile[11];  //我的文件类，包含文件各种信息,具体定义在头文件 
+    QsciScintilla *textcopy;
+    QVector<MyFile> myfile;  //我的文件类数组，包含文件各种信息,具体定义在头文件
+    QAction *action_closeChoose;
+    int newfile;       //新建文件的个数
     int filenum;       //文件总数
     int cus;           //记录文件编号
     int currentfile;   //当前打开文件编号
+    int CurrentChoose; //右键选中的文件编号
+    int bfx;
+    int bfy;
+    bool ischanged;
+    bool select_change;
+    bool ischanged_s;
+    int s_bfx,s_bfy,s_x,s_y;
+    bool isopenfile;
+    bool isdelete;
+
+    QString sss;
 
 private slots:
         void on_copy();       //声明复制函数
@@ -64,11 +79,19 @@ private slots:
         void ind_it();      //声明缩进函数
         void cind_it();      //声明取消缩进函数
         void full_screen(); //声明全屏函数
+        void hide_comment();  //隐藏全部注释
+        void display_comment();  //展示全部注释
+        void change_comment(int); //改变/*类注释的换行符至后台文本框的$$,或者将后台文本框的换行符$$转变成\r\n
         void on_treeWidget_customContextMenuRequested(const QPoint &pos);
         void mark_it();     //注释
         void search_show();      //声明搜索窗口函数
+        void replace_show();
         void search(find_dialog *find_dlg);      //声明搜索函数
         void replace(find_dialog *find_dlg); //替换
+
+        void text_change();
+        void cursor_change(int x,int y);
+        void selection_change();
 };
 
 #endif // MAINWINDOW_H

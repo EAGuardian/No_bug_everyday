@@ -53,8 +53,8 @@ void MainWindow::full_screen()
 }
 bool MainWindow::edit_it()//编译
 {
-    QString destname = myfile[currentfile].Path;
-    QString fpath = myfile[currentfile].Path;
+    QString destname = myfile.at(currentfile).Path;
+    QString fpath = myfile.at(currentfile).Path;
     destname.replace(".c",".exe");
     QString command = "gcc -o " + destname +" "+ fpath + " 2> error.txt";
     system(command.toStdString().data());
@@ -67,51 +67,29 @@ bool MainWindow::edit_it()//编译
     if(!array.isEmpty()){//编译错误
         qDebug()<<"edit error!";
         return false;
-//        ui->setupUi(editerror);
     }
     else//编译成功
     {
         qDebug()<<"edit success!";
+        ui->ResultWidget->setText("edit success!");
         return true;
     }
 }
 void MainWindow::run_it()//运行
 {
-    QString destname = myfile[currentfile].Path;
+    QString destname = myfile.at(currentfile).Path;
     destname.replace(".c",".exe");
     system(destname.toStdString().data());
     qDebug()<<"run success!";
 }
 
 
-//void MainWindow::ann_it()     //行类注释的功能
-//{
-//        QTextCursor cursor;
-//        cursor = textEdit->topa;
-//        QString str=cursor.selectedText();
-//        int length = str.length();
-//        QString first = "/*";
-//        QString last ="*/";
-//        if(str.mid(0,2) == first && str.mid(length-2) == last)      //判断是否存在注释
-//      //mid（n,m）函数截取从第n个字符后的m个字符，如果无m则截取到结尾
-//        {
-//            cursor.insertText(str.mid(2,length-4));
-//        }
-//        else  cursor.insertText("/*"+str+"*/");
-//}
+
+
 void MainWindow::ann_it()     //行类注释的功能
 {
     int selectionStart =textEdit->SendScintilla(QsciScintillaBase::SCI_GETSELECTIONSTART);     //获取当前选择开头部分的位置
     int selectionEnd = textEdit->SendScintilla(QsciScintillaBase::SCI_GETSELECTIONEND);         //获取当前选择结束部分的位置
-
-//    int startLine = textEdit->SendScintilla(QsciScintillaBase::SCI_LINEFROMPOSITION,selectionStart);    //行开始的位置    从0作为第一排
-//    int endLine = textEdit->SendScintilla(QsciScintillaBase::SCI_LINEFROMPOSITION,selectionEnd);    //行结束的位置
-//    qDebug()<<selectionStart<<selectionEnd;
-//    qDebug()<<startLine<<endLine;
-//    int startcurrent = textEdit->SendScintilla(QsciScintillaBase::SCI_GETLINEINDENTPOSITION,startLine);
-//    int endtcurrent = textEdit->SendScintilla(QsciScintillaBase::SCI_GETLINEINDENTPOSITION,endLine+1);
-//    qDebug()<<startcurrent<<endtcurrent;
-
     QString str = textEdit->selectedText();
     QString first = "/*";
     QString last ="*/";
@@ -279,6 +257,120 @@ void MainWindow::cind_it()   //取消缩进
          }
     }
 }
+
+void MainWindow::change_comment(int Type){
+    if(!Type)
+    {
+        QString Str=textEdit->text();
+        int start=0,linefeed_start,linefeed_end,end;
+        while(1)
+        {
+            start=Str.indexOf("/*",start);
+
+            if(start!=-1)
+            {
+                end=Str.indexOf("*/",start);
+                if(end==-1) end=2147483647;
+                linefeed_start=start;
+                while(1)
+                {
+                    linefeed_end=Str.indexOf("\r\n",linefeed_start);
+                    if(linefeed_end>=end||linefeed_end==-1)
+                    {
+                        break;
+                    }
+                    if(linefeed_end!=-1)
+                    {
+                        linefeed_start=linefeed_end;
+                        Str.replace(linefeed_end,2,"$$");
+                    }
+                }
+                start=end;
+            }
+            else break;
+        }
+        textcopy->setText(Str);
+    }
+    else
+    {
+        isopenfile=true;
+        QString Str=textcopy->text();
+        int start=0,linefeed_start,linefeed_end,end;
+        while(1)
+        {
+            start=Str.indexOf("/*",start);
+
+            if(start!=-1)
+            {
+                end=Str.indexOf("*/",start);
+                if(end==-1) end=2147483647;
+                linefeed_start=start;
+                while(1)
+                {
+                    linefeed_end=Str.indexOf("$$",linefeed_start);
+                    if(linefeed_end>=end||linefeed_end==-1)
+                    {
+                        break;
+                    }
+                    if(linefeed_end!=-1)
+                    {
+                        linefeed_start=linefeed_end;
+                        Str.replace(linefeed_end,2,"\r\n");
+                    }
+                }
+                start=end;
+            }
+            else break;
+        }
+        textEdit->setText(Str);
+        isopenfile=false;
+    }
+}
+void MainWindow::hide_comment(){
+    change_comment(0);
+    isopenfile=true;
+    textEdit->setCursorPosition(0,1);
+    int i,index;
+    QString LineStr;
+    for(i=0;1;i++)
+    {
+        LineStr=textEdit->text(i);
+        if(LineStr.isEmpty()) break;
+        index=LineStr.indexOf("//");
+        if(index!=-1)
+        {
+            textEdit->setSelection(i,0,i,LineStr.count()-1);
+            LineStr.remove(index,LineStr.count()-index);
+            LineStr.append("\r\n");
+            textEdit->replaceSelectedText(LineStr);
+        }
+    }
+     QString Str=textEdit->text();
+     int start,end;
+     while(1)
+     {
+         start=Str.indexOf("/*");
+         if(start!=-1)
+         {
+             end=Str.indexOf("*/",start);
+             if(end!=-1)
+                  Str.remove(start,end-start+2);
+             else
+                  Str.remove(start,Str.count()-start);
+         }
+         else break;
+     }
+     textEdit->setText(Str);
+     isopenfile=false;
+     ui->action_hide->setEnabled(false);
+     ui->action_display->setEnabled(true);
+
+}
+void MainWindow::display_comment(){
+    change_comment(1);
+    ui->action_hide->setEnabled(true);
+    ui->action_display->setEnabled(false);
+}
 void   MainWindow:: keyPressEvent(QKeyEvent *event)  //实现一些键盘操作
    {
        if(event->key()==Qt::Key_Escape&&Fullsize)
@@ -288,11 +380,6 @@ void   MainWindow:: keyPressEvent(QKeyEvent *event)  //实现一些键盘操作
             ui->statusBar->showMessage("   ");   //清空状态栏中的信息
             qDebug()<<"1";
        }
-//       if(event->modifiers()==Qt::ControlModifier)
-//       {
-//           if(event->key()==Qt::Key_Slash)
-//                ann_it();
-//       }
 
    }
 
@@ -300,30 +387,29 @@ void MainWindow::on_treeWidget_customContextMenuRequested(const QPoint &pos)    
 {
     QTreeWidgetItem* curItem=ui->treeWidget->itemAt(pos);  //获取当前被点击的节点
     if(curItem==NULL)return;           //这种情况是右键的位置不在treeItem的范围内，即在空白位置右击
-    QVariant var = curItem->data(0,Qt::UserRole);
-    if(0 == var)      //data(...)返回的data已经在之前建立节点时用setdata()设置好
-    {
-        QMenu *popMenu =new QMenu(this);//定义一个右键弹出菜单
-        popMenu->addAction(ui->action_close);//往菜单内添加QAction   该action在前面用设计器定义了
-        popMenu->exec(QCursor::pos());//弹出右键菜单，菜单位置为光标位置
-    }
-    else
-    {
-        QMenu *popMenu =new QMenu(this);//定义一个右键弹出菜单
-        popMenu->addAction(ui->action_close);//往菜单内添加QAction   该action在前面用设计器定义了
-        popMenu->exec(QCursor::pos());//弹出右键菜单，菜单位置为光标位置
-    }
-
+    CurrentChoose=curItem->text(2).toInt()-1;
+    QMenu *popMenu =new QMenu(this);//定义一个右键弹出菜单
+    popMenu->addAction(action_closeChoose);//往菜单内添加QAction   该action在前面用设计器定义了
+    popMenu->exec(QCursor::pos());//弹出右键菜单，菜单位置为光标位置
 }
 
+
 void MainWindow::search_show(){  //搜索窗口
-    find_dialog *find_dlg = new find_dialog();
+    find_dialog *find_dlg = new find_dialog(0,0);
     find_dlg->setAttribute(Qt::WA_DeleteOnClose);
     find_dlg->setWindowTitle(tr("查找"));
     connect(find_dlg,&find_dialog::start_search,this,[=](){search(find_dlg);});
-    connect(find_dlg,&find_dialog::start_replace,this,[=](){search(find_dlg);replace(find_dlg);});
     find_dlg->show();
 }
+void MainWindow::replace_show(){  //替换窗口
+    find_dialog *find_dlg = new find_dialog(0,1);
+    find_dlg->setAttribute(Qt::WA_DeleteOnClose);
+    find_dlg->setWindowTitle(tr("查找"));
+    connect(find_dlg,&find_dialog::start_replace,this,[=](){replace(find_dlg);});
+    find_dlg->show();
+}
+
+
 
 void MainWindow::search(find_dialog *find_dlg)   //搜索
 {
@@ -342,16 +428,82 @@ void MainWindow::search(find_dialog *find_dlg)   //搜索
 
 void MainWindow::replace(find_dialog *find_dlg) //替换
 {
-//    QString str = find_dlg->replace_text;
-//    QTextCursor replace_cursor = ui->EditWidget->textCursor();
-//    replace_cursor.removeSelectedText();
-//    replace_cursor.insertText(str);
-//    //设置光标
-//    int end = replace_cursor.position();
-//    int start = replace_cursor.position()-str.length();
-//    replace_cursor.setPosition(start,QTextCursor::MoveAnchor);
-//    replace_cursor.setPosition(end,QTextCursor::KeepAnchor);
-//    ui->EditWidget->setTextCursor(replace_cursor);
-//    //ui->EditWidget->find(str,QTextDocument::FindBackward);
+    QString find_text = find_dlg->find_text;
+    QString replace_text = find_dlg->replace_text;
+    if(find_text.isEmpty()||replace_text.isEmpty()) return;
+    textEdit->findFirst(find_text,false,false,false,false);
+    textEdit->replaceSelectedText(replace_text);
+    int line,index;
+    int *l=&line,*i=&index;
+    textEdit->getCursorPosition(l,i);
+    textEdit->setSelection(line,index-replace_text.count(),line,index);
+}
+void MainWindow::text_change()
+{
+
+    if(!isopenfile)
+    {
+        ischanged = true;
+    }
+
+
+}
+
+void MainWindow::cursor_change(int x,int y)
+{
+    QString line = textEdit->text(x);//统计缩进数量
+    int t = line.count("\t");
+    y -= t*7;
+    if(ischanged)//文本变动
+    {
+
+
+        if( x<bfx || (x==bfx&&y<bfy) )//删除
+        {
+            textcopy->setSelection(x,y,bfx,bfy);
+            textcopy->removeSelectedText();
+        }
+        else
+        {
+            select_change = false;
+
+            textEdit->setSelection(bfx,bfy,x,y);
+            QString str = textEdit->selectedText();
+
+
+            if((s_bfx!=s_x || s_bfy!=s_y) && !isdelete)//说明发生覆盖
+            {
+                textcopy->setSelection(s_bfx,s_bfy,s_x,s_y);
+                textcopy->removeSelectedText();
+                textcopy->getSelection(&s_bfx,&s_bfy,&s_x,&s_y);
+            }
+            textcopy->insertAt(str,bfx,bfy);
+            textEdit->setCursorPosition(x,y);
+            select_change = true;
+            isdelete = false;
+            textEdit->getSelection(&s_bfx,&s_bfy,&s_x,&s_y);
+//            qDebug()<<"添加成功";
+        }
+    }
+    bfx = x;//记录上一次坐标
+    bfy = y;
+    ischanged = false;//文本变动解除
+}
+
+void MainWindow::selection_change()
+{
+    if(!ischanged)//文本不变动时记录选区
+    {
+        textEdit->getSelection(&s_bfx,&s_bfy,&s_x,&s_y);
+//        qDebug()<<"s_bfx:"<<s_bfx<<", s_bfy"<<s_bfy<<", s_x"<<s_x<<", s_y"<<s_y;
+    }
+    if(select_change && ischanged && (s_bfx!=s_x || s_bfy!=s_y))//发生选中删除操作
+    {
+         textcopy->setSelection(s_bfx,s_bfy,s_x,s_y);
+         textcopy->removeSelectedText();
+//         qDebug()<<"选中删除";
+         ischanged = false; //文本变动解除
+         isdelete = true;   //是否发生删除
+    }
 }
 #endif // BASICOPERATION_H

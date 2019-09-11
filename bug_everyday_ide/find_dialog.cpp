@@ -1,11 +1,15 @@
 #include "find_dialog.h"
 #include "ui_find_dialog.h"
 
-find_dialog::find_dialog(QWidget *parent) :
-    QDialog(parent),
+find_dialog::find_dialog(QWidget *parent,int t) :
+    QDialog(parent),tab(t),
     ui(new Ui::find_dialog)
 {
     ui->setupUi(this);
+    if(t==0)
+        ui->tabWidget->setCurrentWidget(ui->tab_1);
+    else
+        ui->tabWidget->setCurrentWidget(ui->tab_2);
 }
 
 find_dialog::~find_dialog()
