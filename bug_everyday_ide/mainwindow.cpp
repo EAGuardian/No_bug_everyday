@@ -52,9 +52,10 @@ MainWindow::MainWindow(QWidget *parent) :
     cus=0;
     newfile=1;
     //文件信息初值
-
+    //工具栏初始状态为不能操作
     textEdit->setEnabled(false);
-    ui->action_display->setEnabled(false);
+
+    //工具栏初始状态为不能操作
     action_closeChoose = new QAction("关闭",this);
     /*以下部分是函数信号槽，处理函数放在头文件basicoperation.h*/
     connect(ui->actioncpy,SIGNAL(triggered()),this,SLOT(on_copy()));        //复制
@@ -71,6 +72,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(action_closeChoose,&QAction::triggered,this,[=](){CloseChooseFile();});        //关闭选择的文件
     connect(ui->actionrun,&QAction::triggered,this,[=](){if(SaveFile())if(edit_it())run_it();});      //运行
     connect(ui->actionedit,&QAction::triggered,this,[=](){if(SaveFile())edit_it();});          //编译
+    connect(ui->actioncpr,&QAction::triggered,this,[=](){if(SaveFile())edit_it();});          //编译运行
     connect(ui->actionann,SIGNAL(triggered()),this,SLOT(ann_it()));   //行内注释
     connect(ui->actioncann,SIGNAL(triggered()),this,SLOT(cann_it()));   //取消注释函数
     connect(ui->actionind,SIGNAL(triggered()),this,SLOT(ind_it()));   //缩进函数
@@ -81,6 +83,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionsrh,&QAction::triggered,this,&MainWindow::search_show);   //搜索
     connect(ui->actionrep,&QAction::triggered,this,&MainWindow::replace_show);  //替换
     connect(ui->actionsdfs,SIGNAL(triggered()),this,SLOT(mark_it()));   //注释
+
+
 
     connect(ui->treeWidget,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(TreeWidgetClick(QTreeWidgetItem *,int)));
     connect(textEdit,SIGNAL(cursorPositionChanged(int,int)),this,SLOT(cursor_change(int,int)));

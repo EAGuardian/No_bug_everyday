@@ -204,6 +204,9 @@
    </property>
   </action>
   <action name="action_save">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/save.png</normaloff>:/resource/save.png</iconset>
@@ -226,6 +229,9 @@
    </property>
   </action>
   <action name="action_close">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/close.png</normaloff>:/resource/close.png</iconset>
@@ -257,6 +263,9 @@
    </property>
   </action>
   <action name="action_redo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/right.png</normaloff>:/resource/right.png</iconset>
@@ -269,6 +278,9 @@
    </property>
   </action>
   <action name="actionreg">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/left.png</normaloff>:/resource/left.png</iconset>
@@ -281,6 +293,9 @@
    </property>
   </action>
   <action name="actioncut">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/cut.png</normaloff>:/resource/cut.png</iconset>
@@ -293,6 +308,9 @@
    </property>
   </action>
   <action name="actioncpy">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/copy.png</normaloff>:/resource/copy.png</iconset>
@@ -305,6 +323,9 @@
    </property>
   </action>
   <action name="actionpst">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/paste.png</normaloff>:/resource/paste.png</iconset>
@@ -351,6 +372,9 @@
    </property>
   </action>
   <action name="actionsrh">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/search.png</normaloff>:/resource/search.png</iconset>
@@ -363,6 +387,9 @@
    </property>
   </action>
   <action name="actionrep">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/replace.png</normaloff>:/resource/replace.png</iconset>
@@ -375,6 +402,9 @@
    </property>
   </action>
   <action name="actionedit">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/compile.png</normaloff>:/resource/compile.png</iconset>
@@ -387,6 +417,9 @@
    </property>
   </action>
   <action name="actionrun">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/run.png</normaloff>:/resource/run.png</iconset>
@@ -399,6 +432,9 @@
    </property>
   </action>
   <action name="actioncpr">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/bay.png</normaloff>:/resource/bay.png</iconset>
@@ -466,6 +502,9 @@
    </property>
   </action>
   <action name="action_hide">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/hide.png</normaloff>:/resource/hide.png</iconset>
@@ -478,6 +517,9 @@
    </property>
   </action>
   <action name="action_display">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/resource/display.png</normaloff>:/resource/display.png</iconset>

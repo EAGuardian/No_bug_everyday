@@ -4,6 +4,27 @@
 #include "ui_mainwindow.h"
 #include<string>
 #include<qstring.h>
+//修改工具栏可否使用状态
+void MainWindow::SetifEnabled(){
+    bool Type;
+    if(textEdit->isEnabled()) Type=true;
+    else Type=false;
+    ui->action_save->setEnabled(Type);
+    ui->action_sava->setEnabled(Type);
+    ui->action_close->setEnabled(Type);
+    ui->actionrun->setEnabled(Type);
+    ui->actionedit->setEnabled(Type);
+    ui->action_hide->setEnabled(Type);
+    ui->action_display->setEnabled(Type);
+    ui->actionsrh->setEnabled(Type);
+    ui->actionrep->setEnabled(Type);
+    ui->actioncpr->setEnabled(Type);
+    ui->actioncpy->setEnabled(Type);
+    ui->actioncut->setEnabled(Type);
+    ui->actionpst->setEnabled(Type);
+    ui->action_redo->setEnabled(Type);
+    ui->actionreg->setEnabled(Type);
+}
 void MainWindow::sleep(unsigned int tim)        //延时函数
 {
        QTime reachtime = QTime::currentTime().addMSecs(tim);        //获取当前时间加上你需要延时的时间

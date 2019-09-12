@@ -28,10 +28,11 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void SetifEnabled();
     void NewFile();   //新建文件
     void OpenFile();  //打开文件
     bool SaveFile();  //保存文件
-    void Save_asFile(); //另存为文件
+    bool Save_asFile(); //另存为文件
     void InitFileList(); //初始化文件列表
     void addFileList(MyFile); //添加文件列表
     void CloseChooseFile();         //关闭选择的文件
@@ -88,7 +89,6 @@ private slots:
         void replace_show();
         void search(find_dialog *find_dlg);      //声明搜索函数
         void replace(find_dialog *find_dlg); //替换
-
         void text_change();
         void cursor_change(int x,int y);
         void selection_change();
