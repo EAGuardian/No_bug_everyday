@@ -27,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
     textEdit->setMarginType(0,QsciScintilla::NumberMargin);//设置编号为0的页边显示行号
     textEdit->setMarginWidth(0,25);//设置页边宽度
     ui->splitter->addWidget(textEdit);
-    ui->splitter->addWidget(textcopy);
     ui->splitter->setStretchFactor(0,1);
     ui->splitter->setStretchFactor(1,6);
     //设置textEdit的一些功能
