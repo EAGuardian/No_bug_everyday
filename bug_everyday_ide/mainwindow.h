@@ -8,6 +8,7 @@
 #include<QKeyEvent>
 #include<QTime>
 #include<QApplication>
+#include<QCloseEvent>
 #include "myfile.h"
 #include "find_dialog.h"
 #include <Qsci/qsciscintilla.h>
@@ -40,7 +41,8 @@ public:
     void keyPressEvent(QKeyEvent * event);  //获取键盘按键函数
     void sleep(unsigned int);   //延时运行函数
     bool Fullsize = false;   //用于记录是否处于全屏模式
-
+signals:
+    void WindowClose();
 public slots:
     void TreeWidgetClick(QTreeWidgetItem *item,int column);
 
@@ -51,8 +53,6 @@ private:
     QVector<MyFile> myfile;  //我的文件类数组，包含文件各种信息,具体定义在头文件
     QAction *action_closeChoose;
     int newfile;       //新建文件的个数
-    int filenum;       //文件总数
-    int cus;           //记录文件编号
     int currentfile;   //当前打开文件编号
     int CurrentChoose; //右键选中的文件编号
     int bfx;
@@ -66,6 +66,8 @@ private:
 
     QString sss;
 
+protected:
+     void closeEvent(QCloseEvent *event);  //关闭窗口事件
 private slots:
         void on_copy();       //声明复制函数
         void select_all();     //声明全选函数函数

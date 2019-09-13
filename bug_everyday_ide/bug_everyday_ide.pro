@@ -15,7 +15,8 @@ HEADERS += \
     filedeal.h \
     myfile.h \
     find_dialog.h \
-    basicoperation.h
+    basicoperation.h \
+    api_add.h
 FORMS += \
         mainwindow.ui \
         find_dialog.ui

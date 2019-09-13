@@ -3,6 +3,7 @@
 #include "filedeal.h"    //文件处理头文件(打开\保存)
 #include "find_dialog.h"
 #include "basicoperation.h"
+#include"api_add.h"
 #include<string>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -22,34 +23,20 @@ MainWindow::MainWindow(QWidget *parent) :
     s_bfx=0;s_bfy=0;s_x=0;s_y=0;
     isopenfile = false;
     //copy的文本框初值
-
-
-
     textEdit->setObjectName(QStringLiteral("textEdit"));
     textEdit->setMarginType(0,QsciScintilla::NumberMargin);//设置编号为0的页边显示行号
     textEdit->setMarginWidth(0,25);//设置页边宽度
     ui->splitter->addWidget(textEdit);
+    ui->splitter->addWidget(textcopy);
     ui->splitter->setStretchFactor(0,1);
     ui->splitter->setStretchFactor(1,6);
     //设置textEdit的一些功能
     QsciLexerCPP *textLexer;
     textLexer = new QsciLexerCPP;
-    textLexer->setColor(QColor(Qt::darkGreen),QsciLexerCPP::DoubleQuotedString);
-    textLexer->setColor(QColor(Qt::darkRed),QsciLexerCPP::Keyword);
-    textLexer->setColor(QColor(Qt::darkGreen),QsciLexerCPP::PreProcessor );
+    apiadd(textLexer,textEdit);
     textEdit->setLexer(textLexer);
-    //开启自动缩进
-    textEdit->setAutoIndent(true);
-    //设置缩进的显示方式
-    textEdit->setIndentationGuides(QsciScintilla::SC_IV_LOOKBOTH);
-    //左侧行号显示的背景色
-    textEdit->setMarginsBackgroundColor(Qt::lightGray);
-    //设置括号匹配
-    textEdit->setBraceMatching(QsciScintilla::SloppyBraceMatch);
     //文件信息初值
-    filenum=0;
     currentfile=0;
-    cus=0;
     newfile=1;
     //文件信息初值
     //工具栏初始状态为不能操作
@@ -69,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->action_save,&QAction::triggered,this,[=](){SaveFile();});        //保存文件
     connect(ui->action_sava,&QAction::triggered,this,[=](){Save_asFile();});        //另存为文件
     connect(ui->action_close,&QAction::triggered,this,[=](){CloseCurrenteFile();});        //关闭当前打开的文件
+    connect(this,&MainWindow::WindowClose,this,[=](){CloseCurrenteFile();});        //关闭当前打开的文件
     connect(action_closeChoose,&QAction::triggered,this,[=](){CloseChooseFile();});        //关闭选择的文件
     connect(ui->actionrun,&QAction::triggered,this,[=](){if(SaveFile())if(edit_it())run_it();});      //运行
     connect(ui->actionedit,&QAction::triggered,this,[=](){if(SaveFile())edit_it();});          //编译
@@ -86,10 +74,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
-    connect(ui->treeWidget,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(TreeWidgetClick(QTreeWidgetItem *,int)));
-    connect(textEdit,SIGNAL(cursorPositionChanged(int,int)),this,SLOT(cursor_change(int,int)));
-    connect(textEdit,SIGNAL(textChanged()),this,SLOT(text_change()));
-    connect(textEdit,SIGNAL(selectionChanged()),this,SLOT(selection_change()));
+    connect(ui->treeWidget,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(TreeWidgetClick(QTreeWidgetItem *,int)));   //选择并切换文件
+    connect(textEdit,SIGNAL(cursorPositionChanged(int,int)),this,SLOT(cursor_change(int,int)));     //光标位置改变
+    connect(textEdit,SIGNAL(textChanged()),this,SLOT(text_change()));   //文本变动
+    connect(textEdit,SIGNAL(selectionChanged()),this,SLOT(selection_change()));   //选取变动
+
 }
 
 MainWindow::~MainWindow()

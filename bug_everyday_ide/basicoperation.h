@@ -34,6 +34,8 @@ void MainWindow::sleep(unsigned int tim)        //延时函数
        }
 }
 
+
+
 void MainWindow::on_copy()          //调用Qt中自带的拷贝函数
 {
     textEdit->copy();
@@ -72,6 +74,9 @@ void MainWindow::full_screen()
     sleep(1500);
     ui->statusBar->showMessage(tr("    按下ESC按键退出全屏"));
 }
+
+
+
 bool MainWindow::edit_it()//编译
 {
     QString destname = myfile.at(currentfile).Path;
@@ -125,8 +130,11 @@ void MainWindow::ann_it()     //行类注释的功能
         textEdit->SendScintilla(QsciScintillaBase::SCI_INSERTTEXT, selectionStart, "/*");
         textEdit->SendScintilla(QsciScintillaBase::SCI_INSERTTEXT, selectionEnd+2, "*/");
     }
-    //末尾位置-4与+2是通过测试测试出来的
+    //末尾位置-4与+2是由于增加或删除了“/*”导致末尾位置发生变化做出的调整
 }
+
+
+
 void MainWindow::mark_it()     //注释&取消注释
 {
     bool judge = true;
@@ -175,6 +183,10 @@ void MainWindow::mark_it()     //注释&取消注释
          else   textEdit->SendScintilla(QsciScintillaBase::SCI_DELETERANGE, lineStart, 2); //删除此行前两个字符
     }
 }
+
+
+
+
 void MainWindow::cann_it()    //取消注释
 {
     bool judge = true;
@@ -232,6 +244,9 @@ void MainWindow::ind_it()     //添加缩进的功能
     }
 
 }
+
+
+
 void MainWindow::cind_it()   //取消缩进
 {
     bool judge = true;
@@ -279,8 +294,11 @@ void MainWindow::cind_it()   //取消缩进
     }
 }
 
-void MainWindow::change_comment(int Type){
-    if(!Type)
+
+
+
+void MainWindow::change_comment(int Type){            //改变/*注释在后台编辑区中的形式，替换换行符
+    if(!Type)            //Type为0表示将原先的\r\n换为$$,再拷贝至后台编辑区
     {
         QString Str=textEdit->text();
         int start=0,linefeed_start,linefeed_end,end;
@@ -312,7 +330,7 @@ void MainWindow::change_comment(int Type){
         }
         textcopy->setText(Str);
     }
-    else
+    else   //Type为1表示将后台编辑区的$$换为\r\n,再拷贝至前台编辑区
     {
         isopenfile=true;
         QString Str=textcopy->text();
@@ -347,25 +365,61 @@ void MainWindow::change_comment(int Type){
         isopenfile=false;
     }
 }
-void MainWindow::hide_comment(){
+
+
+void MainWindow::hide_comment(){    //隐藏注释
     change_comment(0);
     isopenfile=true;
     textEdit->setCursorPosition(0,1);
-    int i,index;
+    int i,index_quotation_front,index_slash,index_quotation_back;
     QString LineStr;
-    for(i=0;1;i++)
+    for(i=0;1;i++)    //遍历文本每一行
     {
-        LineStr=textEdit->text(i);
-        if(LineStr.isEmpty()) break;
-        index=LineStr.indexOf("//");
-        if(index!=-1)
+        LineStr=textEdit->text(i);  //将每一行文本存入字符串
+        if(LineStr.isEmpty()) break;  //文本为空，结束
+        int quotation_start=0;   //寻找第一个双引号的起点
+        while(1)
         {
-            textEdit->setSelection(i,0,i,LineStr.count()-1);
-            LineStr.remove(index,LineStr.count()-index);
-            LineStr.append("\r\n");
-            textEdit->replaceSelectedText(LineStr);
+            index_quotation_front=LineStr.indexOf("\"",quotation_start);  //先寻找第一个双引号
+            if(index_quotation_front!=-1)     //第一个双引号存在
+            {
+                index_quotation_back=LineStr.indexOf("\"",index_quotation_front+1);  //寻找第二个双引号
+                qDebug() << "index_quotation_back=" << index_quotation_back;
+                if(index_quotation_back!=-1)  //第二个双引号存在，继续寻找双引号组，将寻找起点更新
+                {
+                    quotation_start=index_quotation_back+1;
+                    qDebug() << "quotation_start=" << quotation_start;
+                }
+                else //如果第二个双引号不存在，该行代码是不规范的代码，注释无效，不隐藏
+                    break;
+
+            }
+            else //没有双引号,直接找注释
+            {
+                index_slash=LineStr.indexOf("//",quotation_start);
+                if(index_slash!=-1)   //有注释存在
+                {
+                      if(LineStr.indexOf("\n")==-1)
+                      {
+                          textEdit->setSelection(i,index_slash,i,LineStr.count());
+                          textEdit->replaceSelectedText("");
+                      }
+                      else
+                      {
+                          textEdit->setSelection(i,index_slash,i,LineStr.count()-1);
+                          textEdit->replaceSelectedText("\r\n");
+                      }
+
+                      qDebug() << LineStr;
+                      qDebug () << textEdit->selectedText();
+                      break;
+                }
+                else  //没有注释存在，继续下一行搜索
+                    break;
+            }
         }
     }
+    //寻找/*类注释并隐藏
      QString Str=textEdit->text();
      int start,end;
      while(1)
@@ -387,7 +441,7 @@ void MainWindow::hide_comment(){
      ui->action_display->setEnabled(true);
 
 }
-void MainWindow::display_comment(){
+void MainWindow::display_comment(){             //显示注释
     change_comment(1);
     ui->action_hide->setEnabled(true);
     ui->action_display->setEnabled(false);
@@ -461,7 +515,6 @@ void MainWindow::replace(find_dialog *find_dlg) //替换
 }
 void MainWindow::text_change()
 {
-
     if(!isopenfile)
     {
         ischanged = true;
@@ -490,6 +543,16 @@ void MainWindow::cursor_change(int x,int y)
 
             textEdit->setSelection(bfx,bfy,x,y);
             QString str = textEdit->selectedText();
+            QString after="";
+            if(str=="(") after=")";
+            if(str=="[") after="]";
+            if(str=="{") after="}";
+            if(str=="<") after=">";
+            if(!after.isEmpty())
+            {
+                textEdit->append(after);
+                textcopy->append(after);
+            }
 
 
             if((s_bfx!=s_x || s_bfy!=s_y) && !isdelete)//说明发生覆盖
@@ -527,4 +590,10 @@ void MainWindow::selection_change()
          isdelete = true;   //是否发生删除
     }
 }
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if(textEdit->isEnabled())
+        emit WindowClose();
+}
+
 #endif // BASICOPERATION_H
